@@ -7,8 +7,8 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<CellarPage />} />
-        <Route path="/edit-Selected-Wine/:id" element={<Wine />} />
+        <Route index element={<CellarPage />} />
+        <Route path="/editSelectedWine/:id" element={<Wine />} />
       </Routes>
     </div>
   );
