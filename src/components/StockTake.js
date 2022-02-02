@@ -7,6 +7,20 @@ const StockTake = () => {
   const [vintage, setVintage] = useState('');
   const [image, setImage] = useState('');
   const [type, setType] = useState('');
+  const [winesStock, setWinesStock] = useState([]);
+
+  const fetchAllStockedWines = async () => {
+    const { data } = await axios.get(`http://localhost:8000/api/cellar`);
+    setWinesStock(data);
+  };
+
+  const handleDelete = async (id) => {
+    await axios.delete(`${process.env.REACT_APP_URL}/api/cellar/${id}`, id);
+    await fetchAllStockedWines();
+    alert('deleted wine');
+  };
+
+  useEffect(fetchAllStockedWines, []);
 
   return (
     <div>
@@ -47,7 +61,9 @@ const StockTake = () => {
         />
       </label>
       <section className="wines">
-        <Wines />
+        {winesStock.map((wine) => (
+          <Wines wine={wine} key={wine.id} />
+        ))}
       </section>
     </div>
   );
