@@ -1,33 +1,26 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useParams, Link } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Wine = () => {
-  const { id } = useParams();
-  const [wine, setWine] = useState({});
-
-  const fetchSelectedWine = async () => {
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_URL}/api/cellar/${id}`
-    );
-    setWine(data);
-  };
-
-  useEffect(fetchSelectedWine, []);
-
+const Wine = ({ id, image, name, vintage, type, handleDelete }) => {
   return (
-    <>
-      <div>Selected Wine</div>
+    <div className="wineContainer" key={id}>
       <div>
-        <img src={wine.image} className="image" alt={wine.name} />
+        <img
+          width="200"
+          src={`http://localhost:8000/${image}`}
+          alt={name}
+        />
       </div>
       <div>
-        <h2>{wine.name}</h2>
-        <h3>{wine.vintage}</h3>
-        <h3>{wine.type} Wine</h3>
-        <Link to="/">Edit</Link>
+        <h2>{name}</h2>
+        <h3>{vintage}</h3>
+        <h3>{type} Wine</h3>
+        <Link to={`/edit-Selected-Wine/${id}`}>Edit</Link>
+        <button type="button" onClick={handleDelete}>
+          Supprimer
+        </button>
       </div>
-    </>
+    </div>
   );
 };
 
