@@ -78,48 +78,50 @@ const StockTake = () => {
   useEffect(fetchAllStockedWines, []);
 
   return (
-    <div>
+    <div className="container">
       <h1>Stocks {totalBottle} bottles</h1>
-      <label htmlFor="name">
-        Wine Appellation
-        <input
-          className="input"
-          id="name"
-          type="text"
-          onChange={(event) => setName(event.target.value)}
-        />
-      </label>
-      <label>
-        Vintage
-        <input
-          className="input"
-          id="vintage"
-          type="text"
-          onChange={(event) => setVintage(event.target.value)}
-        />
-      </label>
-      <label>
-        Image
-        <input
-          className="input"
-          id="file"
-          type="file"
-          onChange={(event) => setImage(event.target.files[0])}
-        />
-      </label>
-      <label>
-        type of wine
-        <input
-          className="input"
-          id="type"
-          type="type"
-          onChange={(event) => setType(event.target.value)}
-        />
-      </label>
-      <button type="button" onClick={addWine}>
-        Add wine
-      </button>
-      <h1>Find wine match</h1>
+      <form className="mb-3">
+        <label htmlFor="name">
+          Wine Appellation
+          <input
+            className="input"
+            id="name"
+            type="text"
+            onChange={(event) => setName(event.target.value)}
+          />
+        </label>
+        <label>
+          Vintage
+          <input
+            className="input"
+            id="vintage"
+            type="text"
+            onChange={(event) => setVintage(event.target.value)}
+          />
+        </label>
+        <label>
+          Image
+          <input
+            className="input"
+            id="file"
+            type="file"
+            onChange={(event) => setImage(event.target.files[0])}
+          />
+        </label>
+        <label>
+          type of wine
+          <input
+            className="input"
+            id="type"
+            type="type"
+            onChange={(event) => setType(event.target.value)}
+          />
+        </label>
+        <button type="button" onClick={addWine}>
+          Add wine
+        </button>
+      </form>
+      {/* <h1>Find wine match</h1> */}
       {/* <Search
         onSubmit={(e) => handleSubmit(e)}
         searchQuery={searchQuery}
@@ -158,8 +160,8 @@ const StockTake = () => {
               <input
                 type="number"
                 min="0"
-                value={newQuantity}
-                onChange={(e) => handleQuantity(e.target.value, wine.id)}
+                onChange={(e) => setNewQuantity(e.target.value)}
+                onClick={() => handleQuantity(newQuantity, wine.id)}
               />
               <Link to={`/edit-Selected-Wine/${wine.id}`}>Details</Link>
               <button type="button" onClick={() => handleDelete(wine.id)}>
