@@ -9,7 +9,7 @@ const Search = ({ searchQuery, setSearchQuery , onSubmit}) => {
       </label>
       <input
         value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
+        onChange={setSearchQuery}
         type="text"
         id="header-search"
         placeholder="Search wine matches"
