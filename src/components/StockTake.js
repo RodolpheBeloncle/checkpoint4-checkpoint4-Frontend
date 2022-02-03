@@ -10,7 +10,7 @@ const StockTake = () => {
   const [vintage, setVintage] = useState('');
   const [image, setImage] = useState('');
   const [type, setType] = useState('');
-  const [quantity, setQuantity] = useState('');
+  const [quantity, setQuantity] = useState("");
   const [newQuantity, setNewQuantity] = useState(0);
   const [winesStock, setWinesStock] = useState([]);
 
@@ -28,7 +28,6 @@ const StockTake = () => {
     formData.append('vintage', vintage);
     formData.append('image', image);
     formData.append('type', type);
-    formData.append('quantity', quantity);
     await axios.post(` http://localhost:8000/api/cellar`, formData);
     await fetchAllStockedWines();
     alert('wine added to winecellar!');
@@ -104,15 +103,6 @@ const StockTake = () => {
           onChange={(event) => setType(event.target.value)}
         />
       </label>
-      <label>
-        quantity
-        <input
-          type="number"
-          min="0"
-          value={quantity}
-          onChange={(event) => setQuantity(event.target.value)}
-        />
-      </label>
       <button type="button" onClick={addWine}>
         Add wine
       </button>
@@ -150,7 +140,7 @@ const StockTake = () => {
               <input
                 type="number"
                 min="0"
-                value={newQuantity}
+                value={wine.quantity}
                 onChange={(e) => handleQuantity(e.target.value, wine.id)}
               />
               <Link to={`/edit-Selected-Wine/${wine.id}`}>Edit</Link>
