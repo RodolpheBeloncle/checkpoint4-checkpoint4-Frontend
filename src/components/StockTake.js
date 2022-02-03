@@ -13,8 +13,8 @@ const StockTake = () => {
   const [image, setImage] = useState('');
   const [type, setType] = useState('');
   const [totalBottle, setTotalBottle] = useState();
-  // const [quantity, setQuantity] = useState("");
-  const [newQuantity, setNewQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(null);
+  const [newQuantity, setNewQuantity] = useState(null);
   const [winesStock, setWinesStock] = useState([]);
 
   // const [searchQuery, setSearchQuery] = useState('');
@@ -52,7 +52,7 @@ const StockTake = () => {
 
   const handleQuantity = async (qty, id) => {
     const objectQuantity = { quantity: qty };
-    setNewQuantity(qty);
+    // setNewQuantity(qty);
     console.log(objectQuantity, qty);
 
     await axios.put(
@@ -80,46 +80,60 @@ const StockTake = () => {
   return (
     <div className="container">
       <h1>Stocks {totalBottle} bottles</h1>
-      <form className="mb-3">
-        <label htmlFor="name">
-          Wine Appellation
-          <input
-            className="input"
-            id="name"
-            type="text"
-            onChange={(event) => setName(event.target.value)}
-          />
-        </label>
-        <label>
-          Vintage
-          <input
-            className="input"
-            id="vintage"
-            type="text"
-            onChange={(event) => setVintage(event.target.value)}
-          />
-        </label>
-        <label>
-          Image
-          <input
-            className="input"
-            id="file"
-            type="file"
-            onChange={(event) => setImage(event.target.files[0])}
-          />
-        </label>
-        <label>
-          type of wine
-          <input
-            className="input"
-            id="type"
-            type="type"
-            onChange={(event) => setType(event.target.value)}
-          />
-        </label>
-        <button type="button" onClick={addWine}>
-          Add wine
-        </button>
+      <form className="row align-items-stretch mb-5">
+        <div className="col-md-6">
+          <div className="form-group">
+            <label htmlFor="name">
+              Wine Appellation
+              <input
+                className="input"
+                id="name"
+                type="text"
+                onChange={(event) => setName(event.target.value)}
+              />
+            </label>
+          </div>
+          <div className="form-group">
+            <label>
+              Vintage
+              <input
+                className="input"
+                id="vintage"
+                type="text"
+                onChange={(event) => setVintage(event.target.value)}
+              />
+            </label>
+          </div>
+          <div className="form-group">
+            <label>
+              Image
+              <input
+                className="input"
+                id="file"
+                type="file"
+                onChange={(event) => setImage(event.target.files[0])}
+              />
+            </label>
+          </div>
+          <div className="form-group">
+            <label>
+              type of wine
+              <input
+                className="input"
+                id="type"
+                type="type"
+                onChange={(event) => setType(event.target.value)}
+              />
+            </label>
+          </div>
+          <button
+            type="button"
+            className="btn btn-primary btn-xl text-uppercase"
+            onClick={addWine}
+          >
+            Add New Wine
+          </button>
+        </div>
       </form>
       {/* <h1>Find wine match</h1> */}
       {/* <Search
@@ -137,36 +151,46 @@ const StockTake = () => {
             />
           ))}
       </span> */}
-      <section className="winesContainer">
+      <section className="row">
         {winesStock.map((wine) => (
-          <div className="wineContainer" key={wine.id}>
-            <div>
-              <img
-                width="200"
-                src={`http://localhost:8000/${wine.image}`}
-                alt={wine.name}
-              />
-            </div>
-            <div>
-              <h2>{wine.name}</h2>
-              <h3>{wine.vintage}</h3>
-              <h3>{wine.type} Wine</h3>
-              <h3>Quantity {wine.quantity}</h3>
-              {wine.quantity < 2 ? (
-                <img src={Red} width="10" alt="red circle" />
-              ) : (
-                <img src={Green} width="10" alt="green circle" />
-              )}
-              <input
-                type="number"
-                min="0"
-                onChange={(e) => setNewQuantity(e.target.value)}
-                onClick={() => handleQuantity(newQuantity, wine.id)}
-              />
-              <Link to={`/edit-Selected-Wine/${wine.id}`}>Details</Link>
-              <button type="button" onClick={() => handleDelete(wine.id)}>
-                Supprimer
-              </button>
+          <div className="col-lg-4 col-sm-6 mb-4">
+            <div className="team-member" key={wine.id}>
+              <Link
+                data-bs-toggle="modal"
+                to={`/edit-Selected-Wine/${wine.id}`}
+              >
+                <img
+                  className="mx-auto rounded-circle"
+                  width="100"
+                  height="100"
+                  src={`http://localhost:8000/${wine.image}`}
+                  alt={wine.name}
+                />
+              </Link>
+
+              <div className="portfolio-caption">
+                <div className="portfolio-caption-heading">{wine.name}</div>
+                <div className="portfolio-caption-heading">{wine.vintage}</div>
+                <div className="portfolio-caption-heading">{wine.type}</div>
+                <div className="portfolio-caption-subheading text-muted">
+                  Quantity {wine.quantity}
+                </div>
+                {wine.quantity < 2 ? (
+                  <img src={Red} width="10" alt="red circle" />
+                ) : (
+                  <img src={Green} width="10" alt="green circle" />
+                )}
+                <input
+                  type="number"
+                  value={wine.quantity}
+                  min="0"
+                  onChange={(e) => setNewQuantity(e.target.value)}
+                  onClick={() => handleQuantity(newQuantity, wine.id)}
+                />
+                <button type="button" onClick={() => handleDelete(wine.id)}>
+                  Supprimer
+                </button>
+              </div>
             </div>
           </div>
         ))}
