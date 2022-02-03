@@ -10,6 +10,7 @@ const StockTake = () => {
   const [vintage, setVintage] = useState('');
   const [image, setImage] = useState('');
   const [type, setType] = useState('');
+  const [totalBottle,setTotalBottle] = useState();
   const [quantity, setQuantity] = useState("");
   const [newQuantity, setNewQuantity] = useState(0);
   const [winesStock, setWinesStock] = useState([]);
@@ -22,6 +23,17 @@ const StockTake = () => {
     setWinesStock(data);
   };
 
+  const fetchNumberOfBottles = async () => {
+    const {data} = await axios.get(`http://localhost:8000/api/cellar/total`);
+
+    await data[0].forEach(element => setTotalBottle(element.total))
+   
+  
+    
+  };
+
+
+
   const addWine = async () => {
     const formData = new FormData();
     formData.append('name', name);
@@ -30,6 +42,7 @@ const StockTake = () => {
     formData.append('type', type);
     await axios.post(` http://localhost:8000/api/cellar`, formData);
     await fetchAllStockedWines();
+    await fetchNumberOfBottles();
     alert('wine added to winecellar!');
   };
 
@@ -49,6 +62,7 @@ const StockTake = () => {
       objectQuantity
     );
     await fetchAllStockedWines();
+    await fetchNumberOfBottles();
   };
 
   const handleSubmit = async (e) => {
@@ -62,11 +76,12 @@ const StockTake = () => {
     setWineMatch(data);
   };
 
+  useEffect(fetchNumberOfBottles,[])
   useEffect(fetchAllStockedWines, []);
 
   return (
     <div>
-      <h1>Stock</h1>
+      <h1>Stock {totalBottle} bottles</h1>
       <label htmlFor="name">
         Wine Appellation
         <input
