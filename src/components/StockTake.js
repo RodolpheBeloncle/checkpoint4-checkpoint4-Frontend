@@ -3,6 +3,8 @@ import Search from '../components/Search';
 import { Link } from 'react-router-dom';
 import Wine from '../components/Wine';
 import axios from 'axios';
+import Green from '../assets/green.png';
+import Red from '../assets/red.png';
 import WinePairing from '../components/WinePairing';
 
 const StockTake = () => {
@@ -10,9 +12,9 @@ const StockTake = () => {
   const [vintage, setVintage] = useState('');
   const [image, setImage] = useState('');
   const [type, setType] = useState('');
-  const [totalBottle,setTotalBottle] = useState();
+  const [totalBottle, setTotalBottle] = useState();
   // const [quantity, setQuantity] = useState("");
-  // const [newQuantity, setNewQuantity] = useState(0);
+  const [newQuantity, setNewQuantity] = useState(0);
   const [winesStock, setWinesStock] = useState([]);
 
   // const [searchQuery, setSearchQuery] = useState('');
@@ -24,15 +26,10 @@ const StockTake = () => {
   };
 
   const fetchNumberOfBottles = async () => {
-    const {data} = await axios.get(`http://localhost:8000/api/cellar/total`);
+    const { data } = await axios.get(`http://localhost:8000/api/cellar/total`);
 
-    await data[0].forEach(element => setTotalBottle(element.total))
-   
-  
-    
+    await data[0].forEach((element) => setTotalBottle(element.total));
   };
-
-
 
   const addWine = async () => {
     const formData = new FormData();
@@ -55,7 +52,7 @@ const StockTake = () => {
   const handleQuantity = async (qty, id) => {
     const objectQuantity = { quantity: qty };
     setNewQuantity(qty);
-    console.log(objectQuantity,qty)
+    console.log(objectQuantity, qty);
 
     await axios.put(
       `http://localhost:8000/api/cellar/quantity/${id}`,
@@ -76,7 +73,7 @@ const StockTake = () => {
   //   setWineMatch(data);
   // };
 
-  useEffect(fetchNumberOfBottles,[])
+  useEffect(fetchNumberOfBottles, []);
   useEffect(fetchAllStockedWines, []);
 
   return (
@@ -152,6 +149,11 @@ const StockTake = () => {
               <h3>{wine.vintage}</h3>
               <h3>{wine.type} Wine</h3>
               <h3>Quantity {wine.quantity}</h3>
+              {wine.quantity < 2 ? (
+                <img src={Red} width="10" alt="red circle" />
+              ) : (
+                <img src={Green} width="10" alt="green circle" />
+              )}
               <input
                 type="number"
                 min="0"

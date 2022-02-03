@@ -26,27 +26,24 @@ const SelectedWine = () => {
 
   return (
     <>
-      <div>Selected SelectedWine</div>
+    
       <div>
-        <img src={wine.image} className="image" alt={wine.name} />
-      </div>
-      <div>
+        <h1>Selected {wine.type}</h1>
         <h2>{wine.name}</h2>
         <h3>{wine.vintage}</h3>
-        <h3>{wine.type} SelectedWine</h3>
         <h3>Stock : {wine.quantity} btls</h3>
         <h2>************</h2>
         <span>
           <img
             width="200"
-            src={`http://localhost:8000/${wineMatch.image}`}
-            alt={wineMatch.name}
+            src={`http://localhost:8000/${wine.image}`}
+            alt={wine.name}
           />
           <h2>
             {wineMatch.name} goes well with {wineMatch.dishName} as a{' '}
             {wineMatch.type}
           </h2>
-          <h3>{wine.vintage}</h3>
+          <h3>Vintage : {wine.vintage}</h3>
         </span>
         <h2>************</h2>
         <Link to="/">Back to wine cellar</Link>
