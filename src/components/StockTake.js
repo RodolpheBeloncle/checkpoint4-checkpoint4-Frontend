@@ -46,6 +46,7 @@ const StockTake = () => {
   const handleDelete = async (id) => {
     await axios.delete(`http://localhost:8000/api/cellar/${id}`, id);
     await fetchAllStockedWines();
+    await fetchNumberOfBottles();
     alert('article supprimé!');
   };
 
@@ -78,7 +79,7 @@ const StockTake = () => {
 
   return (
     <div>
-      <h1>Stock {totalBottle} bottles</h1>
+      <h1>Stocks {totalBottle} bottles</h1>
       <label htmlFor="name">
         Wine Appellation
         <input
@@ -157,7 +158,7 @@ const StockTake = () => {
               <input
                 type="number"
                 min="0"
-                value={wine.quantity}
+                value={newQuantity}
                 onChange={(e) => handleQuantity(e.target.value, wine.id)}
               />
               <Link to={`/edit-Selected-Wine/${wine.id}`}>Details</Link>
