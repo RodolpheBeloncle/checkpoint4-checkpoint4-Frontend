@@ -25,6 +25,7 @@ const SelectedWine = () => {
         <h2>{wine.name}</h2>
         <h3>{wine.vintage}</h3>
         <h3>{wine.type} SelectedWine</h3>
+        <h3>Stock : {wine.quantity} btls</h3>
         <Link to="/">Back to wine cellar</Link>
       </div>
     </>

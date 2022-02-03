@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Search from '../components/Search';
+import { Link } from 'react-router-dom';
 import Wine from '../components/Wine';
 import axios from 'axios';
 import WinePairing from '../components/WinePairing';
@@ -9,6 +10,8 @@ const StockTake = () => {
   const [vintage, setVintage] = useState('');
   const [image, setImage] = useState('');
   const [type, setType] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [newQuantity, setNewQuantity] = useState(0);
   const [winesStock, setWinesStock] = useState([]);
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -25,6 +28,7 @@ const StockTake = () => {
     formData.append('vintage', vintage);
     formData.append('image', image);
     formData.append('type', type);
+    formData.append('quantity', quantity);
     await axios.post(` http://localhost:8000/api/cellar`, formData);
     await fetchAllStockedWines();
     alert('wine added to winecellar!');
@@ -34,6 +38,18 @@ const StockTake = () => {
     await axios.delete(`http://localhost:8000/api/cellar/${id}`, id);
     await fetchAllStockedWines();
     alert('article supprimé!');
+  };
+
+  const handleQuantity = async (qty, id) => {
+    const objectQuantity = { quantity: qty };
+    setNewQuantity(qty);
+    console.log(objectQuantity,qty)
+
+    await axios.put(
+      `http://localhost:8000/api/cellar/quantity/${id}`,
+      objectQuantity
+    );
+    await fetchAllStockedWines();
   };
 
   const handleSubmit = async (e) => {
@@ -88,6 +104,15 @@ const StockTake = () => {
           onChange={(event) => setType(event.target.value)}
         />
       </label>
+      <label>
+        quantity
+        <input
+          type="number"
+          min="0"
+          value={quantity}
+          onChange={(event) => setQuantity(event.target.value)}
+        />
+      </label>
       <button type="button" onClick={addWine}>
         Add wine
       </button>
@@ -102,22 +127,38 @@ const StockTake = () => {
           wineMatch.map((match) => (
             <WinePairing
               image={match.image}
-              name={match.name}
+              name={match.dishName}
               type={match.type}
             />
           ))}
       </span>
       <section className="winesContainer">
         {winesStock.map((wine) => (
-          <Wine
-            key={wine.id}
-            id={wine.id}
-            image={wine.image}
-            name={wine.name}
-            vintage={wine.vintage}
-            type={wine.type}
-            handleDelete={() => handleDelete(wine.id)}
-          />
+          <div className="wineContainer" key={wine.id}>
+            <div>
+              <img
+                width="200"
+                src={`http://localhost:8000/${wine.image}`}
+                alt={wine.name}
+              />
+            </div>
+            <div>
+              <h2>{wine.name}</h2>
+              <h3>{wine.vintage}</h3>
+              <h3>{wine.type} Wine</h3>
+              <h3>Quantity {wine.quantity}</h3>
+              <input
+                type="number"
+                min="0"
+                value={newQuantity}
+                onChange={(e) => handleQuantity(e.target.value, wine.id)}
+              />
+              <Link to={`/edit-Selected-Wine/${wine.id}`}>Edit</Link>
+              <button type="button" onClick={() => handleDelete(wine.id)}>
+                Supprimer
+              </button>
+            </div>
+          </div>
         ))}
       </section>
     </div>
