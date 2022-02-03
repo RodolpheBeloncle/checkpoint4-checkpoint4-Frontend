@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Search from '../components/Search';
-import { Form, InputGroup, FormControl } from 'react-bootstrap';
+import { Form, InputGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Green from '../assets/green.png';
@@ -130,7 +129,6 @@ const StockTake = () => {
           </button>
         </div>
       </form>
-      <h1>Find wine match</h1>
       <div className="search-form_container">
           <Form.Control
             type="text"
