@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
-import WinePairing from '../components/WinePairing';
 
 const SelectedWine = () => {
   const { id } = useParams();
@@ -21,16 +20,16 @@ const SelectedWine = () => {
     console.log(data);
     setWineMatch(data);
   };
+
   useEffect(handleWineMatch, []);
   useEffect(fetchSelectedWine, []);
 
   return (
     <>
-    
       <div>
         <h1>Selected {wine.type}</h1>
         <h2>{wine.name}</h2>
-        <h3>{wine.vintage}</h3>
+        <h3> Vintage : {wine.vintage}</h3>
         <h3>Stock : {wine.quantity} btls</h3>
         <h2>************</h2>
         <span>
@@ -43,11 +42,10 @@ const SelectedWine = () => {
             {wineMatch.name} goes well with {wineMatch.dishName} as a{' '}
             {wineMatch.type}
           </h2>
-          <h3>Vintage : {wine.vintage}</h3>
         </span>
         <h2>************</h2>
         <Link to="/">Back to wine cellar</Link>
-        <button type="button">modify</button>
+        <p>modify</p>
       </div>
     </>
   );

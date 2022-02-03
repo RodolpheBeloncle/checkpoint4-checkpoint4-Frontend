@@ -6,8 +6,9 @@ const CellarPage = () => {
         <div>
         <header className="masthead">
             <div className="container">
-                <div className="masthead-subheading">Welcome To Your Wine Cellar!</div>
-                <div className="masthead-heading text-uppercase">Help Yourself</div>
+            <div className="masthead-heading text-uppercase">Welcome To Your Wine Cellar!</div>
+                <div className="masthead-subheading">Help yourself</div>
+                
             </div>
         </header>
          <StockTake/>

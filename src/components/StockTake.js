@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Search from '../components/Search';
 import { Link } from 'react-router-dom';
-import Wine from '../components/Wine';
 import axios from 'axios';
 import Green from '../assets/green.png';
 import Red from '../assets/red.png';
-import WinePairing from '../components/WinePairing';
 
 const StockTake = () => {
   const [name, setName] = useState('');
@@ -15,6 +13,8 @@ const StockTake = () => {
   const [totalBottle, setTotalBottle] = useState();
   const [newQuantity, setNewQuantity] = useState(null);
   const [winesStock, setWinesStock] = useState([]);
+  const [selectedRadio, setSelectedRadio] = useState('');
+  const radios = ['Red', 'White', 'Sweet'];
 
   const fetchAllStockedWines = async () => {
     const { data } = await axios.get(`http://localhost:8000/api/cellar`);
@@ -28,27 +28,34 @@ const StockTake = () => {
   };
 
   const addWine = async () => {
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('vintage', vintage);
-    formData.append('image', image);
-    formData.append('type', type);
-    await axios.post(` http://localhost:8000/api/cellar`, formData);
-    await fetchAllStockedWines();
-    await fetchNumberOfBottles();
-    alert('wine added to winecellar!');
+    if (window.confirm('Would you like to add this reference ?')) {
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('vintage', vintage);
+      formData.append('image', image);
+      formData.append('type', type);
+      await axios.post(` http://localhost:8000/api/cellar`, formData);
+      await fetchAllStockedWines();
+      await fetchNumberOfBottles();
+      alert('wine added to winecellar!');
+    }
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:8000/api/cellar/${id}`, id);
-    await fetchAllStockedWines();
-    await fetchNumberOfBottles();
-    alert('article supprimé!');
+    if (
+      window.confirm(
+        'Would you like to delete this wine from your wine celar ?'
+      )
+    ) {
+      await axios.delete(`http://localhost:8000/api/cellar/${id}`, id);
+      await fetchAllStockedWines();
+      await fetchNumberOfBottles();
+      alert('article supprimé!');
+    }
   };
 
   const handleQuantity = async (qty, id) => {
     const objectQuantity = { quantity: qty };
-    // setNewQuantity(qty);
     console.log(objectQuantity, qty);
 
     await axios.put(
@@ -64,9 +71,8 @@ const StockTake = () => {
 
   return (
     <div className="container">
-      <h1>Stocks {totalBottle} bottles</h1>
       <form className="row align-items-stretch mb-5">
-        <div >
+        <div>
           <div className="form-group mb-md-0">
             <label htmlFor="name">
               Wine Appellation
@@ -136,49 +142,81 @@ const StockTake = () => {
             />
           ))}
       </span> */}
-      <section className="row">
-        {winesStock.map((wine) => (
-          <div className="col-lg-4 col-sm-6 mb-4">
-            <div className="team-member" key={wine.id}>
-              <Link
-                data-bs-toggle="modal"
-                to={`/edit-Selected-Wine/${wine.id}`}
-              >
-                <img
-                  className="mx-auto rounded-circle"
-                  width="100"
-                  height="100"
-                  src={`http://localhost:8000/${wine.image}`}
-                  alt={wine.name}
-                />
-              </Link>
+      <h1>In stock {totalBottle} bottles</h1>
+      <h2>Filtering</h2>
+      <ul>
+        {radios.map((radio) => {
+          return (
+            <li key={radio}>
+              <input
+                type="radio"
+                value={radio}
+                id={radio}
+                checked={radio === selectedRadio}
+                onChange={(e) => setSelectedRadio(e.target.value)}
+              />
+              <label htmlFor={radio}>{radio}</label>
+            </li>
+          );
+        })}
+      </ul>
+      <div className="cancel">
+        {selectedRadio && (
+          <h5 onClick={() => setSelectedRadio('')}>Annuler recherche</h5>
+        )}
+      </div>
 
-              <div className="portfolio-caption">
-                <div className="portfolio-caption-heading">{wine.name}</div>
-                <div className="portfolio-caption-heading">{wine.vintage}</div>
-                <div className="portfolio-caption-heading">{wine.type}</div>
-                <div className="portfolio-caption-subheading text-muted">
-                  Quantity {wine.quantity}
+      <section className="row">
+        {winesStock
+          .filter((wine) => wine.type.includes(selectedRadio))
+          .map((wine) => (
+            <div className="col-lg-4 col-sm-6 mb-4">
+              <div className="team-member" key={wine.id}>
+                <Link
+                  data-bs-toggle="modal"
+                  to={`/edit-Selected-Wine/${wine.id}`}
+                >
+                  <img
+                    className="mx-auto rounded-circle"
+                    width="100"
+                    height="100"
+                    src={`http://localhost:8000/${wine.image}`}
+                    alt={wine.name}
+                  />
+                </Link>
+
+                <div className="portfolio-caption">
+                  <div className="portfolio-caption-heading">{wine.name}</div>
+                  <div className="portfolio-caption-heading">
+                    {wine.vintage}
+                  </div>
+                  <div className="portfolio-caption-heading">{wine.type}</div>
+                  <div className="portfolio-caption-subheading text-muted">
+                    Quantity {wine.quantity}
+                  </div>
+                  {wine.quantity < 2 ? (
+                    <img src={Red} width="10" alt="red circle" />
+                  ) : (
+                    <img src={Green} width="10" alt="green circle" />
+                  )}
+                  <input
+                    type="number"
+                    value={wine.quantity}
+                    min="0"
+                    onChange={(e) => setNewQuantity(e.target.value)}
+                    onClick={() => handleQuantity(newQuantity, wine.id)}
+                  />
+                  <button
+                    type="button"
+                    className="btn-primary"
+                    onClick={() => handleDelete(wine.id)}
+                  >
+                    Supprimer
+                  </button>
                 </div>
-                {wine.quantity < 2 ? (
-                  <img src={Red} width="10" alt="red circle" />
-                ) : (
-                  <img src={Green} width="10" alt="green circle" />
-                )}
-                <input
-                  type="number"
-                  value={wine.quantity}
-                  min="0"
-                  onChange={(e) => setNewQuantity(e.target.value)}
-                  onClick={() => handleQuantity(newQuantity, wine.id)}
-                />
-                <button type="button" onClick={() => handleDelete(wine.id)}>
-                  Supprimer
-                </button>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
       </section>
     </div>
   );
