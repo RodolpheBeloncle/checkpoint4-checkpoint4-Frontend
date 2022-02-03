@@ -11,12 +11,12 @@ const StockTake = () => {
   const [image, setImage] = useState('');
   const [type, setType] = useState('');
   const [totalBottle,setTotalBottle] = useState();
-  const [quantity, setQuantity] = useState("");
-  const [newQuantity, setNewQuantity] = useState(0);
+  // const [quantity, setQuantity] = useState("");
+  // const [newQuantity, setNewQuantity] = useState(0);
   const [winesStock, setWinesStock] = useState([]);
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [wineMatch, setWineMatch] = useState([]);
+  // const [searchQuery, setSearchQuery] = useState('');
+  // const [wineMatch, setWineMatch] = useState([]);
 
   const fetchAllStockedWines = async () => {
     const { data } = await axios.get(`http://localhost:8000/api/cellar`);
@@ -65,16 +65,16 @@ const StockTake = () => {
     await fetchNumberOfBottles();
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { data } = await axios.get(
-      'http://localhost:8000/api/cellar/search',
-      { params: { name: searchQuery } }
-    );
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const { data } = await axios.get(
+  //     'http://localhost:8000/api/cellar/search',
+  //     { params: { name: searchQuery } }
+  //   );
 
-    console.log(data);
-    setWineMatch(data);
-  };
+  //   console.log(data);
+  //   setWineMatch(data);
+  // };
 
   useEffect(fetchNumberOfBottles,[])
   useEffect(fetchAllStockedWines, []);
@@ -122,7 +122,7 @@ const StockTake = () => {
         Add wine
       </button>
       <h1>Find wine match</h1>
-      <Search
+      {/* <Search
         onSubmit={(e) => handleSubmit(e)}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -136,7 +136,7 @@ const StockTake = () => {
               type={match.type}
             />
           ))}
-      </span>
+      </span> */}
       <section className="winesContainer">
         {winesStock.map((wine) => (
           <div className="wineContainer" key={wine.id}>
@@ -158,7 +158,7 @@ const StockTake = () => {
                 value={wine.quantity}
                 onChange={(e) => handleQuantity(e.target.value, wine.id)}
               />
-              <Link to={`/edit-Selected-Wine/${wine.id}`}>Edit</Link>
+              <Link to={`/edit-Selected-Wine/${wine.id}`}>Details</Link>
               <button type="button" onClick={() => handleDelete(wine.id)}>
                 Supprimer
               </button>
