@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Search from '../components/Search';
+import { Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Green from '../assets/green.png';
@@ -144,22 +145,22 @@ const StockTake = () => {
       </span> */}
       <h1>In stock {totalBottle} bottles</h1>
       <h2>Filtering</h2>
-      <ul>
+      <Form>
         {radios.map((radio) => {
           return (
-            <li key={radio}>
-              <input
-                type="radio"
+            <div key={radio}>
+            <Form.Check 
+                type="switch"
                 value={radio}
                 id={radio}
                 checked={radio === selectedRadio}
                 onChange={(e) => setSelectedRadio(e.target.value)}
               />
               <label htmlFor={radio}>{radio}</label>
-            </li>
+            </div>
           );
         })}
-      </ul>
+        </Form>
       <div className="cancel">
         {selectedRadio && (
           <h5 onClick={() => setSelectedRadio('')}>Annuler recherche</h5>
