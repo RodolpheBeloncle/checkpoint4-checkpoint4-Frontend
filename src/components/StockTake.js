@@ -13,12 +13,8 @@ const StockTake = () => {
   const [image, setImage] = useState('');
   const [type, setType] = useState('');
   const [totalBottle, setTotalBottle] = useState();
-  const [quantity, setQuantity] = useState(null);
   const [newQuantity, setNewQuantity] = useState(null);
   const [winesStock, setWinesStock] = useState([]);
-
-  // const [searchQuery, setSearchQuery] = useState('');
-  // const [wineMatch, setWineMatch] = useState([]);
 
   const fetchAllStockedWines = async () => {
     const { data } = await axios.get(`http://localhost:8000/api/cellar`);
@@ -63,17 +59,6 @@ const StockTake = () => {
     await fetchNumberOfBottles();
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const { data } = await axios.get(
-  //     'http://localhost:8000/api/cellar/search',
-  //     { params: { name: searchQuery } }
-  //   );
-
-  //   console.log(data);
-  //   setWineMatch(data);
-  // };
-
   useEffect(fetchNumberOfBottles, []);
   useEffect(fetchAllStockedWines, []);
 
@@ -81,45 +66,45 @@ const StockTake = () => {
     <div className="container">
       <h1>Stocks {totalBottle} bottles</h1>
       <form className="row align-items-stretch mb-5">
-        <div className="col-md-6">
-          <div className="form-group">
+        <div >
+          <div className="form-group mb-md-0">
             <label htmlFor="name">
               Wine Appellation
               <input
-                className="input"
+                className="form-control"
                 id="name"
                 type="text"
                 onChange={(event) => setName(event.target.value)}
               />
             </label>
           </div>
-          <div className="form-group">
+          <div className="form-group mb-md-0">
             <label>
               Vintage
               <input
-                className="input"
+                className="form-control"
                 id="vintage"
                 type="text"
                 onChange={(event) => setVintage(event.target.value)}
               />
             </label>
           </div>
-          <div className="form-group">
+          <div className="form-group mb-md-0">
             <label>
               Image
               <input
-                className="input"
+                className="form-control"
                 id="file"
                 type="file"
                 onChange={(event) => setImage(event.target.files[0])}
               />
             </label>
           </div>
-          <div className="form-group">
+          <div className="form-group mb-md-0">
             <label>
               type of wine
               <input
-                className="input"
+                className="form-control"
                 id="type"
                 type="type"
                 onChange={(event) => setType(event.target.value)}
