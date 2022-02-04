@@ -8,14 +8,28 @@ const SelectedWine = () => {
   const [wine, setWine] = useState({});
   const [wineMatch, setWineMatch] = useState([]);
   const [isActive, setActive] = useState(false);
+  const [showDishes, setShowDishes] = useState(false);
+  const [dishes, setDishes] = useState([]);
 
   const handleToggle = () => {
     setActive(!isActive);
   };
 
+  const handleShowDishes = () => {
+    setShowDishes(!showDishes);
+  };
+
   const fetchSelectedWine = async () => {
     const { data } = await axios.get(`http://localhost:8000/api/cellar/${id}`);
     setWine(data);
+  };
+
+  const fetchSelectionDishes = async () => {
+    const { data } = await axios.get(
+      ` http://localhost:8000/api/cellar/dishes`
+    );
+    console.log(data);
+    setDishes(data[0]);
   };
 
   const handleWineMatch = async () => {
@@ -29,6 +43,7 @@ const SelectedWine = () => {
 
   useEffect(handleWineMatch, []);
   useEffect(fetchSelectedWine, []);
+  useEffect(fetchSelectionDishes, []);
 
   return (
     <>
@@ -74,8 +89,20 @@ const SelectedWine = () => {
         </div>
         <div className="control">
           <Link to="/">Back to wine cellar</Link>
-          <p className="btn">modify</p>
         </div>
+
+        <span class="tag tag-teal" onClick={handleShowDishes}>
+          Add a match regarding choice dishes
+        </span>
+        {showDishes && (
+          <span>
+            {dishes.map((dish) => (
+              <>
+                <p>{dish.dishName}</p>
+              </>
+            ))}
+          </span>
+        )}
       </div>
     </>
   );
