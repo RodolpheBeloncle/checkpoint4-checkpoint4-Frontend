@@ -42,31 +42,35 @@ const SelectedWine = () => {
             />
           </div>
           <div class="card-body">
-            <span class="tag tag-teal" onClick={handleToggle} >WineMatch</span>
+            <span class="tag tag-teal" onClick={handleToggle}>
+              WineMatch
+            </span>
             <h4>{wine.name}</h4>
             <p>Selected {wine.type}</p>
             <p> Vintage : {wine.vintage}</p>
             <p>Stock : {wine.quantity} btls</p>
           </div>
           <h2>************</h2>
-          <div>{isActive && <h1>Hello react</h1>}</div>
-         
+          <div>
+            {isActive && (
+              <>
+                <div class="user">
+                  <img
+                    src="https://media-exp1.licdn.com/dms/image/C5603AQFmHcfeCaLOig/profile-displayphoto-shrink_200_200/0/1580748741484?e=1649289600&v=beta&t=tDOj06kWQm8EmY6psLUxR-PSY1pxiDKuBw8SojtS21I"
+                    alt="user"
+                  />
 
-          <div class="user">
-            <img
-              src="https://yt3.ggpht.com/a/AGF-l7-0J1G0Ue0mcZMw-99kMeVuBmRxiPjyvIYONg=s900-c-k-c0xffffffff-no-rj-mo"
-              alt="user"
-            />
-
-            <div className="user-info">
-              <h5>
-                {wineMatch.name} goes well with {wineMatch.dishName} as a{' '}
-                {wineMatch.type}
-              </h5>
-            </div>
+                  <div className="user-info">
+                    <h5>
+                      {wineMatch.name} goes well with {wineMatch.dishName} as a{' '}
+                      {wineMatch.type}
+                    </h5>
+                  </div>
+                </div>
+                <h2>************</h2>
+              </>
+            )}
           </div>
-
-          <h2>************</h2>
         </div>
         <div className="control">
           <Link to="/">Back to wine cellar</Link>
