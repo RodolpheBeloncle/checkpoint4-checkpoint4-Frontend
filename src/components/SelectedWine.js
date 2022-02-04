@@ -25,6 +25,7 @@ const SelectedWine = () => {
     );
     await fetchAllStockedWines();
     await fetchNumberOfBottles();
+    await handleWineMatch();
   };
 
   const handleShowDishes = () => {
@@ -89,6 +90,11 @@ const SelectedWine = () => {
 
                   <div className="user-info">
                     <h5>
+                    {/* {wineMatch.map(match=>(
+                      <h5>{match.name}</h5>
+
+
+                    ))} */}
                       {wineMatch.name} goes well with {wineMatch.dishName} as a{' '}
                       {wineMatch.type}
                     </h5>
@@ -103,7 +109,7 @@ const SelectedWine = () => {
           <Link to="/">Back to wine cellar</Link>
         </div>
 
-        <span class="tag tag-teal" onClick={handleShowDishes}>
+        <span className="tag tag-teal" onClick={handleShowDishes}>
           Add a match regarding choice dishes
         </span>
         {showDishes && (
@@ -113,6 +119,7 @@ const SelectedWine = () => {
                 <p>{dish.dishName}</p>
                 <button
                     type="button"
+                    className="tag tag-teal"
                     onClick={() => handleAddMatch(dish.id,id)}
                   >
                     addMatch
