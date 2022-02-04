@@ -15,6 +15,18 @@ const SelectedWine = () => {
     setActive(!isActive);
   };
 
+  const handleAddMatch = async (dishId, wineId) => {
+    const objectMatch = { dishId: dishId};
+    console.log(dishId, wineId);
+
+    await axios.post(
+      `http://localhost:8000/api/cellar/newDishMatch/${wineId}`,
+      objectMatch
+    );
+    await fetchAllStockedWines();
+    await fetchNumberOfBottles();
+  };
+
   const handleShowDishes = () => {
     setShowDishes(!showDishes);
   };
@@ -99,6 +111,12 @@ const SelectedWine = () => {
             {dishes.map((dish) => (
               <>
                 <p>{dish.dishName}</p>
+                <button
+                    type="button"
+                    onClick={() => handleAddMatch(dish.id,id)}
+                  >
+                    addMatch
+                  </button>
               </>
             ))}
           </span>
