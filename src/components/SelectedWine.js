@@ -65,7 +65,7 @@ const SelectedWine = () => {
           <div className="card-header">
             <img
               width="200"
-              src={`http://localhost:8000/${wine.image}`}
+              src={`${process.env.REACT_APP_API_URL}/${wine.image}`}
               alt={wine.name}
             />
           </div>

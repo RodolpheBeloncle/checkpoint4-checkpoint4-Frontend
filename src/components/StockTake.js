@@ -19,12 +19,12 @@ const StockTake = () => {
 
 
   const fetchAllStockedWines = async () => {
-    const { data } = await axios.get(`http://localhost:8000/api/cellar`);
+    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/cellar`);
     setWinesStock(data);
   };
 
   const fetchNumberOfBottles = async () => {
-    const { data } = await axios.get(`http://localhost:8000/api/cellar/total`);
+    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/cellar/total`);
 
     await data[0].forEach((element) => setTotalBottle(element.total));
   };
@@ -36,7 +36,7 @@ const StockTake = () => {
       formData.append('vintage', vintage);
       formData.append('image', image);
       formData.append('type', type);
-      await axios.post(` http://localhost:8000/api/cellar`, formData);
+      await axios.post(` ${process.env.REACT_APP_API_URL}/api/cellar`, formData);
       await fetchAllStockedWines();
       await fetchNumberOfBottles();
       alert('wine added to winecellar!');
@@ -49,7 +49,7 @@ const StockTake = () => {
         'Would you like to delete this wine from your wine celar ?'
       )
     ) {
-      await axios.delete(`http://localhost:8000/api/cellar/${id}`, id);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/cellar/${id}`, id);
       await fetchAllStockedWines();
       await fetchNumberOfBottles();
       alert('article supprimé!');
@@ -61,7 +61,7 @@ const StockTake = () => {
     console.log(objectQuantity, qty);
 
     await axios.put(
-      `http://localhost:8000/api/cellar/quantity/${id}`,
+      `${process.env.REACT_APP_API_URL}/api/cellar/quantity/${id}`,
       objectQuantity
     );
     await fetchAllStockedWines();
@@ -185,7 +185,7 @@ const StockTake = () => {
                     className="mx-auto rounded-circle"
                     width="100"
                     height="100"
-                    src={`http://localhost:8000/${wine.image}`}
+                    src={`${process.env.REACT_APP_API_URL}/${wine.image}`}
                     alt={wine.name}
                   />
                 </Link>

@@ -5,7 +5,7 @@ const Wine = ({ id, image, name, vintage, type,value, handleDelete,handleQuantit
   return (
     <div className="wineContainer" key={id}>
       <div>
-        <img width="200" src={`http://localhost:8000/${image}`} alt={name} />
+        <img width="200" src={`${process.env.REACT_APP_API_URL}/${image}`} alt={name} />
       </div>
       <div>
         <h2>{name}</h2>
